@@ -27,6 +27,7 @@ const uint8_t MIRAGE_SWING_HORIZONTAL = 0x01;
 const uint8_t MIRAGE_SWING_VERTICAL = 0x1A;
 
 const uint8_t MIRAGE_POWER_OFF = 0xC0;
+const uint8_t MIRAGE_REMOTE_POWER_OFF = 0xC2;
 
 const uint8_t MIRAGE_TEMP_OFFSET = 0x5C;
 
@@ -136,7 +137,7 @@ bool MirageClimate::on_receive(remote_base::RemoteReceiveData data) {
   const esphome::remote_base::MirageData& data_decoded = *optional_data_decoded;  // Dereference the optional to get the MirageData
   obj.dump(data_decoded);
 
-  if (data_decoded.data[5] == MIRAGE_POWER_OFF) {
+  if (data_decoded.data[5] == MIRAGE_POWER_OFF || data_decoded.data[5] == MIRAGE_REMOTE_POWER_OFF) {
       this->mode = climate::CLIMATE_MODE_OFF;
   } else {
     auto mode = data_decoded.data[4] & 0x70;
